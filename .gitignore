@@ -131,3 +131,4 @@ dist
 *.json
 *.json
 rayn-media/rt-db.json
+/rayn-media
