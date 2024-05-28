@@ -133,5 +133,5 @@ dist
 rayn-media/rt-db.json
 /rayn-media
 
-# Ignore all files in the 'logs' subfolder.
+#    all files in the 'logs' subfolder.
 /rayn-media/
