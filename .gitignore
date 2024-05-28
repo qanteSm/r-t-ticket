@@ -131,6 +131,7 @@ dist
 *.json
 *.json
 rayn-media/rt-db.json
+rayn-media/*.json
 /rayn-media
 
 #    all files in the 'logs' subfolder.
