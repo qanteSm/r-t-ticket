@@ -1,0 +1,47 @@
+{
+  "1172413816139694130": {
+    "ticket-system": {
+      "panelowner": "971309368467419168",
+      "panelcolor": "2B2D31",
+      "paneltitle": "Sunucumuza Hoşgeldin!",
+      "paneldescription": "Ticket açmak için **Ticket Aç** yazılı düğmeye tıklayın!",
+      "panelattendant": "1172448816256004156",
+      "panelbutton": { "style": "2", "label": "🎫 Ticket Aç" },
+      "panelchannel": "1172413816139694133",
+      "transcriptchannel": "1172513855658790963",
+      "category": {
+        "closed": "1172413816139694132",
+        "opened": "1172413816139694131"
+      },
+      "lastpanel": {
+        "id": "1244320789373779980",
+        "channelid": "1172413816139694133"
+      }
+    },
+    "ticket-1244282905568477274": {
+      "deletereq": {
+        "userid": "971309368467419168",
+        "date": "2024-05-26T17:24:53.906Z"
+      }
+    },
+    "ticket-1244325445680500848": {
+      "deletereq": {
+        "userid": "971309368467419168",
+        "date": "2024-05-26T17:24:53.906Z"
+      }
+    },
+    "971309368467419168-aktifticket": {
+      "channelid": "1245066783329747085",
+      "ownerid": "971309368467419168",
+      "creationtime": 1716917452856,
+      "durum": "1"
+    },
+    "ticket-1245066783329747085": {
+      "channelid": "1245066783329747085",
+      "ownerid": "971309368467419168",
+      "creationtime": 1716917452856,
+      "durum": "1",
+      "addedusers": ["1017171430019960904", "556420152590336010"]
+    }
+  }
+}
