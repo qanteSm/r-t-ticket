@@ -126,6 +126,9 @@ module.exports = {
       try {
         const ticketgörevlisi = interaction.options.getRole("ticket-attendant");
         const ticketkanal = interaction.options.getChannel("ticket-channel");
+        const tickettimeout = interaction.options.getString(
+          "ticket-timeout"
+        );
         const buttoncolor = interaction.options.getString(
           "ticket-button-color"
         );
