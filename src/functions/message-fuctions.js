@@ -16,7 +16,10 @@ exports.usermessage = async function (message, interaction) {
   const mesajembed = new EmbedBuilder().setColor("2B2D31").setTitle(message);
   interaction.reply({ embeds: [mesajembed], ephemeral: true });
 };
-
+exports.errormessage = async function (interaction) {
+  const mesajembed = new EmbedBuilder().setColor("2B2D31").setTitle("An unexpected error occurred.");
+  interaction.reply({ embeds: [mesajembed], ephemeral: true });
+};
 exports.updatemessage = async function (message, interaction) {
     const mesajembed = new EmbedBuilder().setColor("2B2D31").setTitle(message);
     interaction.update({ embeds: [mesajembed], components: [] });

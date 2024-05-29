@@ -11,46 +11,43 @@ const {
   ButtonStyle,
   AttachmentBuilder,
   PermissionsBitField,
-} = require("discord.js");
-const db = require("croxydb");
-const { kontrol, verial } = require("../functions/ticket-main-functions");
-const { usermessage, updatemessage } = require("../functions/message-fuctions");
-const discordTranscripts = require("discord-html-transcripts");
-const date = new Date();
-const year = date.getFullYear();
-const month = String(date.getMonth() + 1).padStart(2, "0");
-const day = String(date.getDate()).padStart(2, "0");
-const hour = String(date.getHours()).padStart(2, "0");
-const minute = String(date.getMinutes()).padStart(2, "0");
+} = require('discord.js')
+const db = require('croxydb')
+const { kontrol, verial } = require('../functions/ticket-main-functions')
+const { usermessage, updatemessage } = require('../functions/message-fuctions')
+const discordTranscripts = require('discord-html-transcripts')
+const date = new Date()
+const year = date.getFullYear()
+const month = String(date.getMonth() + 1).padStart(2, '0')
+const day = String(date.getDate()).padStart(2, '0')
+const hour = String(date.getHours()).padStart(2, '0')
+const minute = String(date.getMinutes()).padStart(2, '0')
 
-const formattedDate = `${year}/${month}/${day} ${hour}:${minute}`;
+const formattedDate = `${year}/${month}/${day} ${hour}:${minute}`
 module.exports = {
-  name: "interactionCreate",
+  name: 'interactionCreate',
   once: false,
 
   async execute(interaction, client) {
-    if (!interaction.isButton()) return;
+    if (!interaction.isButton()) return
 
-    if (interaction.customId == "ticket.delete.yes") {
-      const result = await kontrol(interaction);
+    if (interaction.customId == 'ticket.delete.yes') {
+      const result = await kontrol(interaction)
       if (result == 1) {
         try {
           usermessage(
-            "Please use the /ticket-setup command again.",
+            'Please use the /ticket-setup command again.',
             interaction
-          );
-          return;
+          )
+          return
         } catch {
-          usermessage(
-            "An issue occurred, please try again later!",
-            interaction
-          );
-          return;
+          usermessage('An issue occurred, please try again later!', interaction)
+          return
         }
       } else {
-        const veriler = await verial(interaction);
+        const veriler = await verial(interaction)
         if (!interaction.member.roles.cache.has(veriler.panelyetkili)) {
-          return;
+          return
         }
         if (
           db.get(
@@ -59,12 +56,12 @@ module.exports = {
         ) {
           console.log(
             `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}.durum`
-          );
+          )
           updatemessage(
-            "Lütfen birkez daha Delete düğmesine tıklayın.",
+            'Lütfen birkez daha Delete düğmesine tıklayın.',
             interaction
-          );
-          return;
+          )
+          return
         }
         if (
           db.fetch(
@@ -75,11 +72,11 @@ module.exports = {
             db.get(
               `${interaction.guild.id}.reqs.close-ticket-${interaction.message.id}`
             )
-          );
-          return;
+          )
+          return
         }
         if (!interaction.guild.channels.cache.has(interaction.channel.id)) {
-          return;
+          return
         }
         try {
           interaction.channel.delete().then((channel) => {
@@ -87,38 +84,35 @@ module.exports = {
               `${interaction.guild.id}.ticket-system.tickets.${db.fetch(
                 `${interaction.guild.id}.ticket-system.tickets.ticket-${channel.id}.ownerid`
               )}-kapalıticket`
-            );
+            )
             db.delete(
               `${interaction.guild.id}.ticket-system.tickets.ticket-${channel.id}`
-            );
+            )
             db.delete(
               `${interaction.guild.id}.reqs.close-ticket-${interaction.message.id}`
-            );
-          });
+            )
+          })
         } catch (err) {
-          return;
+          return
         }
       }
-    } else if (interaction.customId == "ticket.reopen.yes"){
-      const result = await kontrol(interaction);
+    } else if (interaction.customId == 'ticket.reopen.yes') {
+      const result = await kontrol(interaction)
       if (result == 1) {
         try {
           usermessage(
-            "Please use the /ticket-setup command again.",
+            'Please use the /ticket-setup command again.',
             interaction
-          );
-          return;
+          )
+          return
         } catch {
-          usermessage(
-            "An issue occurred, please try again later!",
-            interaction
-          );
-          return;
+          usermessage('An issue occurred, please try again later!', interaction)
+          return
         }
       } else {
-        const veriler = await verial(interaction);
+        const veriler = await verial(interaction)
         if (!interaction.member.roles.cache.has(veriler.panelyetkili)) {
-          return;
+          return
         }
         if (
           db.get(
@@ -127,12 +121,9 @@ module.exports = {
         ) {
           console.log(
             `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}.durum`
-          );
-          updatemessage(
-            "Lütfen birkez daha düğmeye tıklayın.",
-            interaction
-          );
-          return;
+          )
+          updatemessage('Lütfen birkez daha düğmeye tıklayın.', interaction)
+          return
         }
         if (
           db.fetch(
@@ -143,47 +134,47 @@ module.exports = {
             db.get(
               `${interaction.guild.id}.reqs.reopen-addusers-ticket-${interaction.message.id}`
             )
-          );
-          return;
+          )
+          return
         }
         if (!interaction.guild.channels.cache.has(interaction.channel.id)) {
-          return;
+          return
         }
         const addedusers =
-            (await db.get(
-              `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}.addedusers`
-            )) || [];
+          (await db.get(
+            `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}.addedusers`
+          )) || []
         const kullanıcı = interaction.guild.members.cache.get(
           db.fetch(
             `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}.ownerid`
           )
-        );
+        )
         try {
-          console.log("a")
-          nonaddedusers(interaction,1)
+          console.log('a')
+          nonaddedusers(interaction, 1)
         } catch (err) {
-          return;
+          return
         }
-        async function nonaddedusers(interaction,code) {
-          console.log("a2")
+        async function nonaddedusers(interaction, code) {
+          console.log('a2')
           interaction.channel.permissionOverwrites
             .set([
               {
-                id: "" + kullanıcı.id + "",
+                id: '' + kullanıcı.id + '',
                 allow: [
                   PermissionsBitField.Flags.ViewChannel,
                   PermissionsBitField.Flags.SendMessages,
                 ],
               },
               {
-                id: "" + veriler.panelyetkili + "",
+                id: '' + veriler.panelyetkili + '',
                 allow: [
                   PermissionsBitField.Flags.ViewChannel,
                   PermissionsBitField.Flags.SendMessages,
                 ],
               },
               {
-                id: "" + interaction.guild.roles.everyone.id + "",
+                id: '' + interaction.guild.roles.everyone.id + '',
                 deny: [
                   PermissionsBitField.Flags.ViewChannel,
                   PermissionsBitField.Flags.SendMessages,
@@ -191,59 +182,60 @@ module.exports = {
               },
             ])
             .then(async () => {
-              const dblot2 = `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}`;
-              const embedmessage = await interaction.channel.messages.fetch(await db.get(`${dblot2}.messageid`))
-              const dblot = `${interaction.guild.id}.ticket-system.tickets.${kullanıcı.id}-aktifticket`;
-             
-              db.set(dblot + ".channelid", db.fetch(dblot2 + ".channelid"));
-              db.set(dblot + ".ownerid", db.fetch(dblot2 + ".ownerid"));
-              db.set(dblot + ".durum", "1");
+              const dblot2 = `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}`
+              const embedmessage = await interaction.channel.messages.fetch(
+                await db.get(`${dblot2}.messageid`)
+              )
+              const dblot = `${interaction.guild.id}.ticket-system.tickets.${kullanıcı.id}-aktifticket`
+
+              db.set(dblot + '.channelid', db.fetch(dblot2 + '.channelid'))
+              db.set(dblot + '.ownerid', db.fetch(dblot2 + '.ownerid'))
+              db.set(dblot + '.durum', '1')
               db.set(
-                dblot + ".creationtime",
-                db.fetch(dblot2 + ".creationtime")
-              );
-              db.set(dblot2 + ".durum", "1");
-              await console.log("mesaj: "+ embedmessage.embeds[0])
-              const embed = embedmessage.embeds[0];
-              
-              embed.fields.splice(-1, 1);
+                dblot + '.creationtime',
+                db.fetch(dblot2 + '.creationtime')
+              )
+              db.set(dblot2 + '.durum', '1')
+              await console.log('mesaj: ' + embedmessage.embeds[0])
+              const embed = embedmessage.embeds[0]
+
+              embed.fields.splice(-1, 1)
               const row = new ActionRowBuilder().addComponents(
                 new ButtonBuilder()
-                  .setCustomId("ticket.close")
-                  .setLabel("Close Ticket")
-                  .setEmoji("✖️")
+                  .setCustomId('ticket.close')
+                  .setLabel('Close Ticket')
+                  .setEmoji('✖️')
                   .setStyle(ButtonStyle.Danger)
-              );
+              )
               embedmessage
                 .edit({ embeds: [embed], components: [row] })
                 .then(() => {
                   interaction.message.delete()
-                  if(code == 1){
-                    addedusers.forEach(function(userinid){
-                       interaction.channel.permissionOverwrites
-                        .edit(userinid, {
+                  if (code == 1) {
+                    addedusers.forEach(function (userinid) {
+                      interaction.channel.permissionOverwrites.edit(userinid, {
                         ViewChannel: true,
                         SendMessages: true,
                       })
                     })
                   }
                   const mesajembed = new EmbedBuilder()
-                    .setColor("2B2D31")
+                    .setColor('2B2D31')
                     .setAuthor({
-                      name: "" + kullanıcı.user.globalName,
+                      name: '' + kullanıcı.user.globalName,
                       iconURL: `${kullanıcı.displayAvatarURL({
                         dynamic: true,
                         size: 1024,
                       })}`,
                     })
                     .setDescription(
-                      "Your Ticket Channel was reopened by <@" +
+                      'Your Ticket Channel was reopened by <@' +
                         interaction.user.id +
-                        ">"
-                    );
+                        '>'
+                    )
                   const row = new ActionRowBuilder().addComponents(
                     new ButtonBuilder()
-                      .setLabel("Go To Channel!")
+                      .setLabel('Go To Channel!')
                       .setURL(
                         `https://discord.com/channels/${
                           interaction.guild.id
@@ -252,28 +244,28 @@ module.exports = {
                         )}`
                       )
                       .setStyle(ButtonStyle.Link)
-                  );
+                  )
                   const chanelmessage = new EmbedBuilder()
-                    .setColor("2B2D31")
-                    .setTitle("Channel Re-opened")
+                    .setColor('2B2D31')
+                    .setTitle('Channel Re-opened')
                     .setDescription(
-                      "Channel Re-opened by <@" + interaction.user.id + ">"
-                    );
-                  
-                  interaction.channel.send({ embeds: [chanelmessage] });
+                      'Channel Re-opened by <@' + interaction.user.id + '>'
+                    )
+
+                  interaction.channel.send({ embeds: [chanelmessage] })
                   try {
                     kullanıcı.send({
                       embeds: [mesajembed],
                       components: [row],
-                    });
-                    console.log("Mesaj başarıyla gönderildi.");
+                    })
+                    console.log('Mesaj başarıyla gönderildi.')
                   } catch (error) {
-                    console.error("Mesaj gönderilirken hata oluştu:", error);
+                    console.error('Mesaj gönderilirken hata oluştu:', error)
                   }
-                });
-            });
+                })
+            })
         }
       }
     }
   },
-};
+}
