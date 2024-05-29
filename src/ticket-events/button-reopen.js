@@ -39,7 +39,15 @@ module.exports = {
                   usermessage("Bu kanal kapalı değil!", interaction)
                   return;
                 }
-                console.log(await db.get(`${interaction.guild.id}.ticket-${interaction.channel.id}.addedusers`))
+                const addedusers = await db.get(`${interaction.guild.id}.ticket-${interaction.channel.id}.addedusers`) ||[];
+                const kullanıcı = interaction.guild.members.cache.get(
+                  db.fetch(
+                    `${interaction.guild.id}.ticket-${interaction.channel.id}.ownerid`
+                  )
+                );
+                if(addedusers == []){
+                  
+                }
               }catch(err){
                 console.log(err)
                 usermessage( "Bir sorun oluştu!",interaction)
