@@ -1,5 +1,6 @@
 1- ticket açma time out // FINISHED
 2- açılış sebebi // FINISHED
-3- close ve re open isstemi tamamen bitirmek (re open yapılırken kullanıcının zaten bir ticketi varsa ticketi açık diyecek!)
-4- ticketi gerçekten kapaymak istiyormusunuz düzenlenecek saçma oldu!
-5- sonradan düzenleme (örn: button rengini değiştirme, hem tamamen değişcek hemde veriyi update yapacak)
+3- close ve re open isstemi tamamen bitirmek (added userları tekrar eklemek ister misin diye soracak)
+4- ticketi gerçekten kapatmak istiyormusunuz düzenlenecek saçma oldu!
+5- remove user eklenecek ( tickete eklenen kullanıcıları silme)
+6- sonradan düzenleme (örn: button rengini değiştirme, hem tamamen değişcek hemde veriyi update yapacak)
