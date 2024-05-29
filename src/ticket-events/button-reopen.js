@@ -109,11 +109,44 @@ module.exports = {
             return;
           }
           if (addedusers.length === 0) {
-            nonaddedusers();
+            nonaddedusers(interaction);
           } else {
-            console.log("a")
+            haveaddedusers();
           }
-          async function nonaddedusers() {
+          async function haveaddedusers() {
+            const yes = new ButtonBuilder()
+          .setCustomId("ticket.reopen.yes")
+          .setLabel("Evet")
+          .setStyle(ButtonStyle.Success);
+        const no = new ButtonBuilder()
+          .setCustomId("ticket.reopen.no")
+          .setLabel("Hayır")
+          .setStyle(ButtonStyle.Danger);
+        const row = new ActionRowBuilder().addComponents(yes,no);
+        const mesajembed = new EmbedBuilder()
+          .setColor("2B2D31")
+          .setTitle("Should the users previously added to the ticket be added again?");
+        interaction.channel.send({
+          content: "<@"+interaction.user.id+">",
+          embeds: [mesajembed],
+          components: [row],
+        }).then((message) => {
+          console.log(message)
+          console.log(message.id)
+          db.set(`${interaction.guild.id}.reqs.reopen-addusers-ticket-${message.id}.userid`,interaction.user.id)
+          db.set(`${interaction.guild.id}.reqs.reopen-addusers-ticket-${message.id}.date`,date)
+          db.set(`${interaction.guild.id}.reqs.reopen-addusers-ticket-${message.id}.messageid`,message.id)
+          usermessage("Please click the yes or no button, the message will be deleted within 10 seconds",interaction)
+          setTimeout(async () => {
+            if (interaction.channel){
+              message.delete();
+            }
+          }, 10000);
+        })
+          }
+          
+          async function nonaddedusers(interaction,code) {
+            console.log("a2")
             interaction.channel.permissionOverwrites
               .set([
                 {
@@ -148,6 +181,10 @@ module.exports = {
                   dblot + ".creationtime",
                   db.fetch(dblot2 + ".creationtime")
                 );
+                db.set(
+                  dblot + ".creationtime",
+                  db.fetch(dblot2 + ".messageid")
+                );
                 db.set(dblot2 + ".durum", "1");
                 const embed = interaction.message.embeds[0];
                 embed.fields.splice(-1, 1);
@@ -161,6 +198,15 @@ module.exports = {
                 interaction
                   .update({ embeds: [embed], components: [row] })
                   .then(() => {
+                    if(code == 1){
+                      addedusers.forEach(function(userinid){
+                         interaction.channel.permissionOverwrites
+                          .edit(userinid, {
+                          ViewChannel: true,
+                          SendMessages: true,
+                        })
+                      })
+                    }
                     const mesajembed = new EmbedBuilder()
                       .setColor("2B2D31")
                       .setAuthor({
@@ -193,6 +239,7 @@ module.exports = {
                       .setDescription(
                         "Channel Re-opened by <@" + interaction.user.id + ">"
                       );
+                    
                     interaction.channel.send({ embeds: [chanelmessage] });
                     try {
                       kullanıcı.send({
@@ -206,6 +253,7 @@ module.exports = {
                   });
               });
           }
+          module.exports = { nonaddedusers};
         } catch (err) {
           console.log(err);
           usermessage("Bir sorun oluştu!", interaction);

@@ -231,17 +231,19 @@ module.exports = {
                     embeds: [mesajembed],
                     components: [row],
                   })
-                  .then(() => {
+                  .then((messagemodal) => {
                     const dblot = `${interaction.guild.id}.ticket-system.tickets.${interaction.user.id}-aktifticket`;
                     db.set(dblot + ".channelid", channel.id);
                     db.set(dblot + ".ownerid", interaction.user.id);
                     db.set(dblot + ".creationtime", suan);
                     db.set(dblot + ".durum", "1");
+                    db.set(dblot + ".messageid", messagemodal.id);
                     const channellot = `${interaction.guild.id}.ticket-system.tickets.ticket-${channel.id}`;
                     db.set(channellot + ".channelid", channel.id);
                     db.set(channellot + ".ownerid", interaction.user.id);
                     db.set(channellot + ".creationtime", suan);
                     db.set(channellot + ".durum", "1");
+                    db.set(channellot + ".messageid", messagemodal.id);
                   });
               });
           } catch (err) {
