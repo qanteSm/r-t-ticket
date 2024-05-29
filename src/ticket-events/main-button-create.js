@@ -14,7 +14,7 @@ const {
 } = require("discord.js");
 const db = require("croxydb");
 const { kontrol, verial } = require("../functions/ticket-main-functions");
-const { usermessage } = require("../functions/message-fuctions");
+const { usermessage, usermessagewithdes } = require("../functions/message-fuctions");
 module.exports = {
   name: "interactionCreate",
   once: false,
@@ -53,7 +53,7 @@ module.exports = {
               db.delete(
                 `${interaction.guild.id}.${interaction.user.id}-aktifticket`
               );
-              main();
+              controltimeout();
               return;
             } else {
               const row = new ActionRowBuilder().addComponents(
@@ -86,10 +86,29 @@ module.exports = {
               return;
             }
           } else {
-            main();
+            controltimeout();
             return;
           }
         } catch {}
+        async function controltimeout(){
+          const veriler = await verial(interaction);
+          const usertimeout = await db.get(`${interaction.guild.id}.tickettimeouts.timeout-${interaction.user.id}`);
+          if (!usertimeout){
+            main();
+          } else {
+            const servertickettimeout = veriler.tickettimeout
+            const usertime = await db.get(`${interaction.guild.id}.tickettimeouts.timeout-${interaction.user.id}.creationtime`);
+            const now = new Date();
+            const suan = now.getTime();
+            if(suan > usertime + servertickettimeout){
+              main();
+            } else {
+              const olmasıgerekntime = usertime + servertickettimeout;
+              usermessagewithdes("Ticket Açamazsınız!",`Yakın bir zamanda ticket açtığınız için şuan tekrar ticket açamazsınız. Ticket acabilmeniz için kalan süre: <t:${Math.floor(olmasıgerekntime / 1000)}:R>`,interaction)
+              return;
+            }
+          }
+        }
         async function main() {
           try {
             const veriler = await verial(interaction);
@@ -200,6 +219,7 @@ module.exports = {
                     db.set(channellot + ".ownerid", interaction.user.id);
                     db.set(channellot + ".creationtime", suan);
                     db.set(channellot + ".durum", "1");
+                    
                   });
               });
           } catch (err) {

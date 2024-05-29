@@ -16,6 +16,9 @@ exports.kontrol = async function (interaction) {
   const panelowner = db.fetch(
     interaction.guild.id + ".ticket-system.panelowner"
   );
+  const tickettimeout = db.fetch(
+    interaction.guild.id + ".ticket-system.tickettimeout"
+  );
   const panelcolor = db.fetch(
     interaction.guild.id + ".ticket-system.panelcolor"
   );
@@ -52,6 +55,7 @@ exports.kontrol = async function (interaction) {
     interaction.guild.id + ".ticket-system.panelbutton.label"
   );
   if (
+    !tickettimeout ||
     !panelowner ||
     !panelcolor ||
     !panelchannel ||
@@ -70,6 +74,7 @@ exports.kontrol = async function (interaction) {
     !transcriptkanal
   ) {
     console.log(
+      panelowner,
       panelbuttonlabel,
       panelbuttonstyle,
       panelchannel,
@@ -89,6 +94,9 @@ exports.kontrol = async function (interaction) {
   }
 };
 exports.verial = async function (interaction) {
+  const tickettimeout = parseInt(db.fetch(
+    interaction.guild.id + ".ticket-system.tickettimeout"
+  ))
   const panelowner = db.fetch(
     interaction.guild.id + ".ticket-system.panelowner"
   );
@@ -127,6 +135,7 @@ exports.verial = async function (interaction) {
     interaction.guild.id + ".ticket-system.panelbutton.label"
   );
   return {
+    tickettimeout,
     panelbuttonlabel,
     panelbuttonstyle,
     panelchannel,

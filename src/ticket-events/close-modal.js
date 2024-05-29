@@ -115,6 +115,12 @@ module.exports = {
                     value: "```" + des + "```",
                   });
                 kullanıcı.send({ embeds: [mesajembed] });
+                const now = new Date();
+
+                const suan = now.getTime();
+                const timeoutlot = `${interaction.guild.id}.tickettimeouts.timeout-${kullanıcı.id}`;
+                db.set(timeoutlot + ".userid", kullanıcı.id);
+                db.set(timeoutlot + ".creationtime", suan);
                 const dblot = `${interaction.guild.id}.${kullanıcı.id}-kapalıticket`;
                 const dblot2 = `${interaction.guild.id}.ticket-${interaction.channel.id}`;
                 db.set(dblot + ".channelid", db.fetch(dblot2 + ".channelid"));
@@ -128,9 +134,8 @@ module.exports = {
                 db.delete(
                   `${interaction.guild.id}.${kullanıcı.id}-aktifticket`
                 );
-                db.delete(
-                  dblot
-                );
+
+                db.delete(dblot);
               } catch (err) {
                 console.log(err);
               }
