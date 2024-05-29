@@ -19,7 +19,7 @@ exports.usermessage = async function (message, interaction) {
 
 exports.updatemessage = async function (message, interaction) {
     const mesajembed = new EmbedBuilder().setColor("2B2D31").setTitle(message);
-    interaction.update({ embeds: [mesajembed] });
+    interaction.update({ embeds: [mesajembed], components: [] });
   };
 
 exports.usermessagewithdes = async function (

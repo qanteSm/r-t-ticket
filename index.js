@@ -75,7 +75,9 @@ for (const file of eventFiles2) {
 	}
 }
 //
-
+process.on('uncaughtException', (error) => {
+    console.error('Yakalanmamış Hata:', error);
+  });
 //------------------------------------ LOGS ---------------------------------------------- //
 
   

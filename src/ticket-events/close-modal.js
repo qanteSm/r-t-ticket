@@ -114,9 +114,20 @@ module.exports = {
                     name: "Reason for closure",
                     value: "```" + des + "```",
                   });
-                kullanıcı.send({ embeds: [mesajembed] });
-                const now = new Date();
+                  try {
+                    kullanıcı.send({ embeds: [mesajembed] });
+                    console.log("Mesaj başarıyla gönderildi.");
+                  } catch (error) {
+                    console.error("Mesaj gönderilirken hata oluştu:", error);
+                  
+                  }
 
+                  const chanelmessage = new EmbedBuilder()
+                .setColor("2B2D31")
+                .setTitle("Channel Closed")
+                .setDescription("Channel Closed by <@"+ interaction.user.id+">");
+                  interaction.channel.send({embeds: [chanelmessage]});
+                const now = new Date();
                 const suan = now.getTime();
                 const timeoutlot = `${interaction.guild.id}.tickettimeouts.timeout-${kullanıcı.id}`;
                 db.set(timeoutlot + ".userid", kullanıcı.id);
