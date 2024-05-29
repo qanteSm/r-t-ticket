@@ -38,7 +38,8 @@ module.exports = {
                   updatemessage("Lütfen birkez daha Delete düğmesine tıklayın.",interaction)
                   return;
                 }
-                if (db.get(`${interaction.guild.id}.ticket-${interaction.channel.id}.deletereq.userid`) != interaction.user.id){
+                if (db.fetch(`${interaction.guild.id}.reqs.close-ticket-${interaction.message.id}.userid`) != interaction.user.id){
+                  console.log(db.get(`${interaction.guild.id}.reqs.close-ticket-${interaction.message.id}`))
                   return;
                 }
                 if (!(interaction.guild.channels.cache.has(interaction.channel.id))){
@@ -48,7 +49,7 @@ module.exports = {
                   interaction.channel.delete().then((channel)=> {
                     db.delete(`${interaction.guild.id}.${db.fetch(`${interaction.guild.id}.ticket-${channel.id}.ownerid`)}-kapalıticket`)
                     db.delete(`${interaction.guild.id}.ticket-${channel.id}`)
-                    
+                    db.delete(`${interaction.guild.id}.reqs.close-ticket-${interaction.message.id}`)
                   })
                 }catch(err){
                   return

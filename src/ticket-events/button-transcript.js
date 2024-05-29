@@ -29,6 +29,7 @@ module.exports = {
                   return;
                 }
               } else {
+                try {
                 const veriler = await verial(interaction);
                 const row = new ActionRowBuilder()
                 .addComponents(
@@ -58,7 +59,10 @@ module.exports = {
                       .setDescription(`Transcript record of the channel was created successfully, You can view it on <#${veriler.transcriptchannel}> channel.`);
                       interaction.editReply({embeds: [mesajembed], components: [row], ephemeral: true})
                   })
+              } catch {
+                  
               }
+            }
             }
         }
     }

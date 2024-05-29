@@ -65,12 +65,20 @@ module.exports = {
         const mesajembed = new EmbedBuilder()
           .setColor("2B2D31")
           .setTitle("Ticketi gerçekten silmek istiyor musunuz?");
-        interaction.reply({
+        interaction.channel.send({
+          content: "<@"+interaction.user.id+">",
           embeds: [mesajembed],
           components: [row],
-        }).then(() => {
-          db.set(`${interaction.guild.id}.ticket-${interaction.channel.id}.deletereq.userid`,interaction.user.id)
-          db.set(`${interaction.guild.id}.ticket-${interaction.channel.id}.deletereq.date`,date)
+        }).then((message) => {
+          console.log(message)
+          console.log(message.id)
+          db.set(`${interaction.guild.id}.reqs.close-ticket-${message.id}.userid`,interaction.user.id)
+          db.set(`${interaction.guild.id}.reqs.close-ticket-${message.id}.date`,date)
+          db.set(`${interaction.guild.id}.reqs.close-ticket-${message.id}.messageid`,message.id)
+          usermessage("Please click the yes or no button, the message will be deleted within 10 seconds",interaction)
+          setTimeout(async () => {
+            message.delete();
+          }, 10000);
         })
       }
     }
