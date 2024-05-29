@@ -77,7 +77,9 @@ module.exports = {
           db.set(`${interaction.guild.id}.reqs.close-ticket-${message.id}.messageid`,message.id)
           usermessage("Please click the yes or no button, the message will be deleted within 10 seconds",interaction)
           setTimeout(async () => {
-            message.delete();
+            if (interaction.channel){
+              message.delete();
+            }
           }, 10000);
         })
       }

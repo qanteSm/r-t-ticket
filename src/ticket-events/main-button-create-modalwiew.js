@@ -45,16 +45,16 @@ module.exports = {
       } else {
         try {
           if (
-            db.get(`${interaction.guild.id}.${interaction.user.id}-aktifticket`)
+            db.get(`${interaction.guild.id}.ticket-system.tickets.${interaction.user.id}-aktifticket`)
           ) {
             const kanal = interaction.guild.channels.cache.has(
               db.fetch(
-                `${interaction.guild.id}.${interaction.user.id}-aktifticket.channelid`
+                `${interaction.guild.id}.ticket-system.tickets.${interaction.user.id}-aktifticket.channelid`
               )
             );
             if (!kanal) {
               db.delete(
-                `${interaction.guild.id}.${interaction.user.id}-aktifticket`
+                `${interaction.guild.id}.ticket-system.tickets.${interaction.user.id}-aktifticket`
               );
               controltimeout();
               return;
@@ -66,7 +66,7 @@ module.exports = {
                     `https://discord.com/channels/${
                       interaction.guild.id
                     }/${db.fetch(
-                      `${interaction.guild.id}.${interaction.user.id}-aktifticket.channelid`
+                      `${interaction.guild.id}.ticket-system.tickets.${interaction.user.id}-aktifticket.channelid`
                     )}`
                   )
                   .setStyle(ButtonStyle.Link)
@@ -77,7 +77,7 @@ module.exports = {
                 .setDescription(
                   "You already have a ticket channel, <#" +
                     db.fetch(
-                      `${interaction.guild.id}.${interaction.user.id}-aktifticket.channelid`
+                      `${interaction.guild.id}.ticket-system.tickets.${interaction.user.id}-aktifticket.channelid`
                     ) +
                     ">"
                 );
@@ -96,14 +96,14 @@ module.exports = {
         async function controltimeout() {
           const veriler = await verial(interaction);
           const usertimeout = await db.get(
-            `${interaction.guild.id}.tickettimeouts.timeout-${interaction.user.id}`
+            `${interaction.guild.id}.ticket-system.tickettimeouts.timeout-${interaction.user.id}`
           );
           if (!usertimeout) {
             main();
           } else {
             const servertickettimeout = veriler.tickettimeout;
             const usertime = await db.get(
-              `${interaction.guild.id}.tickettimeouts.timeout-${interaction.user.id}.creationtime`
+              `${interaction.guild.id}.ticket-system.tickettimeouts.timeout-${interaction.user.id}.creationtime`
             );
             const now = new Date();
             const suan = now.getTime();

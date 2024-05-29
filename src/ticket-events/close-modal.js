@@ -93,7 +93,7 @@ module.exports = {
                 );
                 const kullanıcı = interaction.guild.members.cache.get(
                   db.fetch(
-                    `${interaction.guild.id}.ticket-${interaction.channel.id}.ownerid`
+                    `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}.ownerid`
                   )
                 );
                 const mesajembed = new EmbedBuilder()
@@ -114,26 +114,27 @@ module.exports = {
                     name: "Reason for closure",
                     value: "```" + des + "```",
                   });
-                  try {
-                    kullanıcı.send({ embeds: [mesajembed] });
-                    console.log("Mesaj başarıyla gönderildi.");
-                  } catch (error) {
-                    console.error("Mesaj gönderilirken hata oluştu:", error);
-                  
-                  }
+                try {
+                  kullanıcı.send({ embeds: [mesajembed] });
+                  console.log("Mesaj başarıyla gönderildi.");
+                } catch (error) {
+                  console.error("Mesaj gönderilirken hata oluştu:", error);
+                }
 
-                  const chanelmessage = new EmbedBuilder()
-                .setColor("2B2D31")
-                .setTitle("Channel Closed")
-                .setDescription("Channel Closed by <@"+ interaction.user.id+">");
-                  interaction.channel.send({embeds: [chanelmessage]});
+                const chanelmessage = new EmbedBuilder()
+                  .setColor("2B2D31")
+                  .setTitle("Channel Closed")
+                  .setDescription(
+                    "Channel Closed by <@" + interaction.user.id + ">"
+                  );
+                interaction.channel.send({ embeds: [chanelmessage] });
                 const now = new Date();
                 const suan = now.getTime();
-                const timeoutlot = `${interaction.guild.id}.tickettimeouts.timeout-${kullanıcı.id}`;
+                const timeoutlot = `${interaction.guild.id}.ticket-system.tickettimeouts.timeout-${kullanıcı.id}`;
                 db.set(timeoutlot + ".userid", kullanıcı.id);
                 db.set(timeoutlot + ".creationtime", suan);
-                const dblot = `${interaction.guild.id}.${kullanıcı.id}-kapalıticket`;
-                const dblot2 = `${interaction.guild.id}.ticket-${interaction.channel.id}`;
+                const dblot = `${interaction.guild.id}.ticket-system.tickets.${kullanıcı.id}-kapalıticket`;
+                const dblot2 = `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}`;
                 db.set(dblot + ".channelid", db.fetch(dblot2 + ".channelid"));
                 db.set(dblot + ".ownerid", db.fetch(dblot2 + ".ownerid"));
                 db.set(dblot + ".durum", "0");
@@ -143,7 +144,7 @@ module.exports = {
                   db.fetch(dblot2 + ".creationtime")
                 );
                 db.delete(
-                  `${interaction.guild.id}.${kullanıcı.id}-aktifticket`
+                  `${interaction.guild.id}.ticket-system.tickets.${kullanıcı.id}-aktifticket`
                 );
 
                 db.delete(dblot);

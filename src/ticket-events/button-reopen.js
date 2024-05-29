@@ -55,8 +55,9 @@ module.exports = {
             return;
           }
           if (
+            
             (await db.get(
-              `${interaction.guild.id}.ticket-${interaction.channel.id}.durum`
+              `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}.durum`
             )) != "0"
           ) {
             usermessage("Bu kanal kapalı değil!", interaction);
@@ -64,17 +65,17 @@ module.exports = {
           }
           const addedusers =
             (await db.get(
-              `${interaction.guild.id}.ticket-${interaction.channel.id}.addedusers`
+              `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}.addedusers`
             )) || [];
           const kullanıcı = interaction.guild.members.cache.get(
             db.fetch(
-              `${interaction.guild.id}.ticket-${interaction.channel.id}.ownerid`
+              `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}.ownerid`
             )
           );
           if (
             interaction.guild.channels.cache.has(
               await db.fetch(
-                `${interaction.guild.id}.${kullanıcı.id}-aktifticket.channelid`
+                `${interaction.guild.id}.ticket-system.tickets.${kullanıcı.id}-aktifticket.channelid`
               )
             )
           ) {
@@ -85,7 +86,7 @@ module.exports = {
                   `https://discord.com/channels/${
                     interaction.guild.id
                   }/${db.fetch(
-                    `${interaction.guild.id}.${kullanıcı.id}-aktifticket.channelid`
+                    `${interaction.guild.id}.ticket-system.tickets.${kullanıcı.id}-aktifticket.channelid`
                   )}`
                 )
                 .setStyle(ButtonStyle.Link)
@@ -96,7 +97,7 @@ module.exports = {
               .setDescription(
                 "User already have a ticket channel, <#" +
                   db.fetch(
-                    `${interaction.guild.id}.${kullanıcı.id}-aktifticket.channelid`
+                    `${interaction.guild.id}.ticket-system.tickets.${kullanıcı.id}-aktifticket.channelid`
                   ) +
                   ">"
               );
@@ -108,6 +109,11 @@ module.exports = {
             return;
           }
           if (addedusers.length === 0) {
+            nonaddedusers();
+          } else {
+            console.log("a")
+          }
+          async function nonaddedusers() {
             interaction.channel.permissionOverwrites
               .set([
                 {
@@ -133,8 +139,8 @@ module.exports = {
                 },
               ])
               .then(() => {
-                const dblot = `${interaction.guild.id}.${kullanıcı.id}-aktifticket`;
-                const dblot2 = `${interaction.guild.id}.ticket-${interaction.channel.id}`;
+                const dblot = `${interaction.guild.id}.ticket-system.tickets.${kullanıcı.id}-aktifticket`;
+                const dblot2 = `${interaction.guild.id}.ticket-system.tickets.ticket-${interaction.channel.id}`;
                 db.set(dblot + ".channelid", db.fetch(dblot2 + ".channelid"));
                 db.set(dblot + ".ownerid", db.fetch(dblot2 + ".ownerid"));
                 db.set(dblot + ".durum", "1");
@@ -169,34 +175,36 @@ module.exports = {
                           interaction.user.id +
                           ">"
                       );
-                      const row = new ActionRowBuilder().addComponents(
-                        new ButtonBuilder()
-                          .setLabel("Go To Channel!")
-                          .setURL(
-                            `https://discord.com/channels/${
-                              interaction.guild.id
-                            }/${db.fetch(
-                              `${interaction.guild.id}.${kullanıcı.id}-aktifticket.channelid`
-                            )}`
-                          )
-                          .setStyle(ButtonStyle.Link)
-                      );
-                      const chanelmessage = new EmbedBuilder()
+                    const row = new ActionRowBuilder().addComponents(
+                      new ButtonBuilder()
+                        .setLabel("Go To Channel!")
+                        .setURL(
+                          `https://discord.com/channels/${
+                            interaction.guild.id
+                          }/${db.fetch(
+                            `${interaction.guild.id}.ticket-system.tickets.${kullanıcı.id}-aktifticket.channelid`
+                          )}`
+                        )
+                        .setStyle(ButtonStyle.Link)
+                    );
+                    const chanelmessage = new EmbedBuilder()
                       .setColor("2B2D31")
                       .setTitle("Channel Re-opened")
-                      .setDescription("Channel Re-opened by <@"+ interaction.user.id+">");
-                        interaction.channel.send({embeds: [chanelmessage]});
+                      .setDescription(
+                        "Channel Re-opened by <@" + interaction.user.id + ">"
+                      );
+                    interaction.channel.send({ embeds: [chanelmessage] });
                     try {
-                      kullanıcı.send({embeds: [mesajembed], components: [row]})
+                      kullanıcı.send({
+                        embeds: [mesajembed],
+                        components: [row],
+                      });
                       console.log("Mesaj başarıyla gönderildi.");
                     } catch (error) {
                       console.error("Mesaj gönderilirken hata oluştu:", error);
-                    
                     }
                   });
               });
-          } else {
-            console.log(addedusers);
           }
         } catch (err) {
           console.log(err);
