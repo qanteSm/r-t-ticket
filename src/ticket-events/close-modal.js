@@ -128,6 +128,9 @@ module.exports = {
                 db.delete(
                   `${interaction.guild.id}.${kullanıcı.id}-aktifticket`
                 );
+                db.delete(
+                  dblot
+                );
               } catch (err) {
                 console.log(err);
               }

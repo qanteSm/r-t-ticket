@@ -72,6 +72,21 @@ module.exports = {
           { name: "Colorless", value: "embedcolor-colorless" }
         )
     )
+
+    //-------------------------------------
+    .addStringOption((option) =>
+      option
+        .setName("ticket-timeout")
+        .setDescription("Timeout for users to open tickets again.")
+        .setRequired(true)
+        .addChoices(
+          { name: "No Timeout", value: "no-timeout" },
+          { name: "10 Min", value: "10-min" },
+          { name: "30 Min", value: "30-min" },
+          { name: "1 Hour", value: "1-h" },
+          { name: "12 Hour", value: "12-h" }
+        )
+    )
     //-------------------------------------
     .addChannelOption((option) =>
       option
