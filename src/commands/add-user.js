@@ -52,13 +52,13 @@ module.exports = {
       if (targetMember.roles.cache.has(veriler.panelyetkili)) {
         console.log(usera);
         usermessage(
-          "Bu kullanıcı zaten bu kanalı görebilir ve mesaj atabilir!",
+          "This user can already see this channel and send messages!",
           interaction
         );
         return;
       }
       if (!db.get(`${interaction.guild.id}.ticket-${interaction.channel.id}`)) {
-        usermessage("Bu kanal bir ticket kanalı değil veya bir sorun oluştu!");
+        usermessage("This channel is not a ticket channel or something went wrong!");
         return;
       }
       const olanveri =
@@ -66,7 +66,7 @@ module.exports = {
           `${interaction.guild.id}.ticket-${interaction.channel.id}.addedusers`
         ) || [];
       if (olanveri.includes(`${targetMember.id}`)) {
-        usermessage("bu kullanıcı zaten tickete eklenmiş.", interaction);
+        usermessage("This user is already added to the ticket.", interaction);
         return;
       }
       const permissions = await checkPermissions(
@@ -78,7 +78,7 @@ module.exports = {
         console.log("kante");
 
         usermessage(
-          "Bu kullanıcı zaten bu kanalı görebilir ve mesaj atabilir!",
+          "This user can already see this channel and send messages!",
           interaction
         );
         return;
@@ -92,11 +92,12 @@ module.exports = {
           `${interaction.guild.id}.ticket-${interaction.channel.id}.addedusers`,
           olanveri
         );
-        usermessage( "User tickete başarıyla eklendi!",interaction)
+        usermessage( 
+          "User successfully added to the ticket!",interaction)
       })
       }catch(err){
         console.log(err)
-        usermessage("Bir hata oluştu", interaction)
+        usermessage("An error occurred", interaction)
       }
     }
   },

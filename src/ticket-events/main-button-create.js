@@ -14,15 +14,18 @@ const {
 } = require("discord.js");
 const db = require("croxydb");
 const { kontrol, verial } = require("../functions/ticket-main-functions");
-const { usermessage, usermessagewithdes } = require("../functions/message-fuctions");
+const {
+  usermessage,
+  usermessagewithdes,
+} = require("../functions/message-fuctions");
 module.exports = {
   name: "interactionCreate",
   once: false,
 
   async execute(interaction, client) {
-    if (!interaction.isButton()) return;
+    if (!interaction.isModalSubmit()) return;
 
-    if (interaction.customId == "ticket.create") {
+    if (interaction.customId == "ticket.open.modal") {
       const result = await kontrol(interaction);
       if (result == 1) {
         try {
@@ -90,27 +93,40 @@ module.exports = {
             return;
           }
         } catch {}
-        async function controltimeout(){
+        async function controltimeout() {
           const veriler = await verial(interaction);
-          const usertimeout = await db.get(`${interaction.guild.id}.tickettimeouts.timeout-${interaction.user.id}`);
-          if (!usertimeout){
+          const usertimeout = await db.get(
+            `${interaction.guild.id}.tickettimeouts.timeout-${interaction.user.id}`
+          );
+          if (!usertimeout) {
             main();
           } else {
-            const servertickettimeout = veriler.tickettimeout
-            const usertime = await db.get(`${interaction.guild.id}.tickettimeouts.timeout-${interaction.user.id}.creationtime`);
+            const servertickettimeout = veriler.tickettimeout;
+            const usertime = await db.get(
+              `${interaction.guild.id}.tickettimeouts.timeout-${interaction.user.id}.creationtime`
+            );
             const now = new Date();
             const suan = now.getTime();
-            if(suan > usertime + servertickettimeout){
+            if (suan > usertime + servertickettimeout) {
               main();
             } else {
               const olmasıgerekntime = usertime + servertickettimeout;
-              usermessagewithdes("Ticket Açamazsınız!",`Yakın bir zamanda ticket açtığınız için şuan tekrar ticket açamazsınız. Ticket acabilmeniz için kalan süre: <t:${Math.floor(olmasıgerekntime / 1000)}:R>`,interaction)
+              usermessagewithdes(
+                "Usage Blocked!",
+                `You cannot open a new ticket at this time because you have recently opened a ticket. Time remaining until you can open a ticket: <t:${Math.floor(
+                  olmasıgerekntime / 1000
+                )}:R>`,
+                interaction
+              );
               return;
             }
           }
         }
         async function main() {
           try {
+            const des = interaction.fields.getTextInputValue(
+              "ticket.open.modal.des"
+            );
             const veriler = await verial(interaction);
             const kategori = veriler.ticketopenedcategory;
             const ticketgörevlisirolid = veriler.panelyetkili;
@@ -189,6 +205,11 @@ module.exports = {
                       name: "Ticket Owner",
                       value: `<@${interaction.user.id}>`,
                       inline: true,
+                    },
+                    {
+                      name: "Reason for closing the ticket",
+                      value: "```" + des + "```",
+                      inline: false,
                     }
                   )
                   .setThumbnail(interaction.guild.iconURL())
@@ -219,7 +240,6 @@ module.exports = {
                     db.set(channellot + ".ownerid", interaction.user.id);
                     db.set(channellot + ".creationtime", suan);
                     db.set(channellot + ".durum", "1");
-                    
                   });
               });
           } catch (err) {

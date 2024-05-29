@@ -1,4 +1,4 @@
 1- ticket açma time out // FINISHED
-2- açılış sebebi
+2- açılış sebebi // FINISHED
 3- close ve re open isstemi tamamen bitirmek (re open yapılırken kullanıcının zaten bir ticketi varsa ticketi açık diyecek!)
 4- sonradan düzenleme (örn: button rengini değiştirme, hem tamamen değişcek hemde veriyi update yapacak)

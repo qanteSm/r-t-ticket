@@ -51,8 +51,8 @@ module.exports = {
           .then((mesaj) => {
             console.log("c");
             usermessagewitlinkbutton(
-              "Zaten bir ticket paneli var, lütfen önce onu silin.",
-              "Ticket Paneline Git!",
+              "There is already a ticket panel, please delete it first.",
+              "Go to Ticket Panel!",
               `https://discord.com/channels/${interaction.guild.id}/${lastpanelchannelid}/${lastpanelid}`,
               interaction
             );
