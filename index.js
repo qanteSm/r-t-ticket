@@ -77,18 +77,7 @@ for (const file of eventFiles2) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-//
 
-/*const eventFiles3 = readdirSync('./src/general-events').filter(file => file.endsWith('.js'));
-
-for (const file of eventFiles3) {
-	const event = require(`./src/general-events/${file}`);
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
-	}
-}*/
 //
 process.on('uncaughtException', (error) => {
     console.error('Yakalanmamış Hata:', error);
