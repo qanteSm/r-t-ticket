@@ -1,4 +1,4 @@
-const { Client, Collection, GatewayIntentBits, Partials,ActivityType } = require("discord.js");
+const { Client, Collection, GatewayIntentBits, Partials,ActivityType,Events } = require("discord.js");
 const { EmbedBuilder, PermissionsBitField, PermissionFlagsBits,ActionRowBuilder,ButtonBuilder,ButtonStyle } = require("discord.js");
 const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildEmojisAndStickers, GatewayIntentBits.GuildIntegrations, GatewayIntentBits.GuildWebhooks, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.DirectMessages, GatewayIntentBits.DirectMessageReactions, GatewayIntentBits.DirectMessageTyping, GatewayIntentBits.MessageContent], shards: "auto", partials: [Partials.Message, Partials.Channel, Partials.GuildMember, Partials.Reaction, Partials.GuildScheduledEvent, Partials.User, Partials.ThreadMember]});
 const { prefix, owner, token } = require("./config.js");
@@ -22,7 +22,7 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 let activities = [ `R-T Ticket - /help, rt!help`, `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} Kişiye Hizmet Veriyorum!`,`${client.guilds.cache.size} Sunucuya Hizmet Veriyorum!` ], i = 0;
-
+client.setMaxListeners(20);
 client.on("ready", async () => {
         try {
             await rest.put(
@@ -52,6 +52,9 @@ client.on('messageCreate', async message => {
         }
     }
 })
+
+
+  
 //event-handler
 const eventFiles = readdirSync('./src/events').filter(file => file.endsWith('.js'));
 
@@ -74,6 +77,18 @@ for (const file of eventFiles2) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
+//
+
+/*const eventFiles3 = readdirSync('./src/general-events').filter(file => file.endsWith('.js'));
+
+for (const file of eventFiles3) {
+	const event = require(`./src/general-events/${file}`);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+}*/
 //
 process.on('uncaughtException', (error) => {
     console.error('Yakalanmamış Hata:', error);

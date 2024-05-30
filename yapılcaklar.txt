@@ -3,4 +3,5 @@
 3- close ve re open isstemi tamamen bitirmek (added userları tekrar eklemek ister misin diye soracak) // FINISHED
 4- ticketi gerçekten kapatmak istiyormusunuz düzenlenecek saçma oldu! // FINISHED
 5- remove user eklenecek ( tickete eklenen kullanıcıları silme) // FINISHED
-6- sonradan düzenleme (örn: button rengini değiştirme, hem tamamen değişcek hemde veriyi update yapacak)
+6- command use timeout eklenecek // FINISHED
+7- sonradan düzenleme (örn: button rengini değiştirme, hem tamamen değişcek hemde veriyi update yapacak)
