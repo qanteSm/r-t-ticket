@@ -1,6 +1,10 @@
 {
+  "name": "r-t-ticket",
+  "version": "1.0.0",
+  "description": "Discord.js v14 sürümü için ticket botu!",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "test": "node index.js"
   },
   "dependencies": {
     "@discordjs/rest": "^1.0.0",
